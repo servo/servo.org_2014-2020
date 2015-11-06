@@ -1,0 +1,25 @@
+footer a {
+  padding-right: 2.9em;
+  padding-left: 0.2em;
+}
+
+footer {
+  border-top: 1px solid #efefef;
+}
+
+.info {
+  font-size: 1.5em;
+  color: gray;
+}
+
+#community {
+  margin-top: 1em;
+  padding: 1em;
+  font-size: 1.3em;
+  border-top: 2px solid #efefef;
+}
+
+.btn {
+  margin-top: 1em;
+}
+
