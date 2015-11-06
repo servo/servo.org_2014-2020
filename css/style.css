@@ -17,6 +17,7 @@ footer {
   padding: 1em;
   font-size: 1.3em;
   border-top: 2px solid #efefef;
+  border-bottom: 2px solid #efefef;
 }
 
 .btn {
