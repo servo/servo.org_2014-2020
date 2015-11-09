@@ -1,10 +1,16 @@
 footer {
   border-top: 1px solid #efefef;
+  margin-top: 5em;
 }
 
 .info {
   font-size: 1.5em;
   color: gray;
+}
+
+#page-title {
+  font-size: 3em;
+  margin-bottom: 0em;
 }
 
 #community {
@@ -13,6 +19,10 @@ footer {
   font-size: 1.3em;
   border-top: 2px solid #efefef;
   border-bottom: 2px solid #efefef;
+}
+
+#contributing {
+  font-size: 1.3em;
 }
 
 .btn {
