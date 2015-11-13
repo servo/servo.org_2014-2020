@@ -38,7 +38,7 @@
       <div class='col-xs-offset-2 col-xs-8'>
 
       <div id='community'>
-  
+
 <p>Created by Mozilla Research, the Servo project is being built by a global
 community, from individual contributors to companies such as Mozilla and
 Samsung.</p>
@@ -65,32 +65,30 @@ Mach tools to orchestrate the build and other tasks.</p>
 <p>To build Servo in development mode. This is useful for development, but the
 resulting binary is very slow.</p>
 
-<div class='code'>
-git clone https://github.com/servo/servo <br>
-cd servo<br>
-./mach build --dev<br>
-./mach run tests/html/about-mozilla.html<br>
-</div>
+<pre><code>git clone https://github.com/servo/servo
+cd servo
+./mach build --dev
+./mach run tests/html/about-mozilla.html
+</code></pre>
 
 <p>For benchmarking, performance testing, or real-world use, add the
-<span class='code'>--release</span> flag to create an optimized build:</p>
+<code>--release</code> flag to create an optimized build:</p>
 
-<div class='code'>
-./mach build --release<br>
-./mach run --release tests/html/about-mozilla.html<br>
-</div>
+<pre><code>./mach build --release
+./mach run --release tests/html/about-mozilla.html
+</code></pre>
 
 <h3>Running</h3>
-<p>Use <span class='code'>./mach run [url]</span> to run Servo.</p>
+<p>Use <code>./mach run [url]</code> to run Servo.</p>
 
 <h4>Commandline Arguments</h4>
 
 <ul>
-<li> <span class='code'>-p INTERVAL</span> turns on the profiler and dumps
+<li> <code>-p INTERVAL</code> turns on the profiler and dumps
 info to the console every INTERVAL seconds</li>
-<li><span class='code'>-s SIZE</span> sets the tile size for painting;
+<li><code>-s SIZE</code> sets the tile size for painting;
 defaults to 512</li>
-<li><span class='code'>-z</span> disables all graphical output; useful for
+<li><code>-z</code> disables all graphical output; useful for
 running JS / layout tests
 </ul>
 
