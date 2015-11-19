@@ -3,6 +3,10 @@ footer {
   margin-top: 5em;
 }
 
+.header {
+  border-bottom: 1px solid #efefef;
+}
+
 .info {
   font-size: 1.5em;
   color: gray;
@@ -29,3 +33,12 @@ footer {
   margin-top: 1em;
 }
 
+h2 {
+  font-size: 2.3em;
+  letter-spacing: 0.14em;
+}
+
+h3 {
+  font-size: 1.7em;
+  letter-spacing: 0.05em;
+}
