@@ -40,33 +40,3 @@ h2 {
 h3 {
   font-size: 1.7em;
 }
-
-#toc, .toc {
-  padding-right: 10px;
-  position: fixed;
-  font-size: 95%;
-  line-height: 2em;
-}
-
-.toc a {
-  color: #767676;
-  padding-left: 10px;
-}
-
-.toc ul {
-  list-style-type: none;
-  padding-left: 1%;
-}
-
-.toc li{
-  border-left: 2px solid #fff;
-}
-
-.toc li:hover{
-  text-decoration: none;
-  border-left: 2px solid #23527c;
-}
-
-.toc a:hover{
-  text-decoration: none;
-}
