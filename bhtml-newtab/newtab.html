@@ -2,7 +2,186 @@
 <head>
     <meta charset="utf-8">
     <title>Servo about:newtab</title>
+    <style>
+      * {
+      font-family: "San Francisco Text", "Helvetica Neue", "Helvetica", sans-serif;
+      -moz-appearance: none;
+      margin: 0;
+      padding: 0;
+      border-width: 0;
+      }
+
+      /* Prevents scrollbars to show up with out-of-window elements */
+      body {
+      font-size: 12px;
+      line-height: 1.5;
+      overflow: hidden;
+      }
+
+
+      .tiles {
+      width: 840px;
+      height: 480px;
+      overflow: hidden;
+      position: absolute;
+      left: calc(50% - 840px / 2);
+      top: calc((100% + 60px) / 2 - 480px / 2);
+      }
+      .tile {
+      cursor: pointer;
+      float: left;
+      margin: 10px 25px 20px;
+      width: 160px;
+      text-decoration: none;
+      }
+      .tile-image {
+      background-color: rgb(255, 255, 255);
+      background-position: center center;
+      background-size: cover;
+      border: 1px solid rgba(0, 0, 0, 0.15);
+      border-radius: 12px;
+      box-sizing: border-box;
+      height: 100px;
+      margin: 0px 0px 10px;
+      width: 160px;
+      }
+      .tile-title {
+      font-size: 14px;
+      line-height: 20px;
+      overflow: hidden;
+      text-align: center;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      width: 100%;
+      color: rgba(0, 0, 0, 0.8);
+      }
+      .youtube {
+      background-image: url(./tiles/youtube.com.png);
+      }
+      .facebook {
+      background-image: url(./tiles/facebook.com.png);
+      }
+      .github {
+      background-image: url(./tiles/github.com.png);
+      }
+      .wikipedia {
+      background-image: url(./tiles/wikipedia.org.png);
+      }
+      .twitter {
+      background-image: url(./tiles/twitter.com.png);
+      }
+      .reddit {
+      background-image: url(./tiles/reddit.com.png);
+      }
+      .duckduckgo {
+      background-image: url(./tiles/duckduckgo.com.png);
+      }
+      .hackernews {
+      background-image: url(./tiles/news.ycombinator.com.png);
+      }
+      .servo {
+      background-image: url(./tiles/servo.org.png);
+      }
+      .rust {
+      background-image: url(./tiles/rust-lang.org.png);
+      }
+      .spheres {
+      background-image: url(./tiles/demo-spheres.png);
+      }
+      .moire {
+      background-image: url(./tiles/demo-moire.png);
+      }
+      .rects {
+      background-image: url(./tiles/demo-transparent_rects.png);
+      }
+      .menus {
+      background-image: url(./tiles/demo-menus.png);
+      }
+    </style>
 </head>
 <body>
-<div style="width: 840px; height: 480px; overflow: hidden; position: absolute; left: calc(50% - 840px / 2); top: calc((100% + 60px) / 2 - 480px / 2);" class="tiles"><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://youtube.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/youtube.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">YouTube</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://facebook.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/facebook.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Facebook</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://amazon.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/amazon.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Amazon</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://twitter.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/twitter.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Twitter</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://wikipedia.org" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/wikipedia.org.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Wikipedia</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://qz.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/qz.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Quartz</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://medium.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/medium.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Medium</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://vox.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/vox.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Vox</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://tumblr.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/tumblr.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Tumblr</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://github.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/github.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Github</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://stackoverflow.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/stackoverflow.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">Stack Overflow</div></a><a style="cursor: pointer; float: left; margin: 10px 25px 20px; width: 160px; text-decoration: none;" target="_blank" rel="noopener noreferrer" href="https://browserhtml.slack.com" class="tile"><div style="background-color: rgb(255, 255, 255); background-size: cover; background-position: center center; border: 1px solid rgba(0, 0, 0, 0.15); border-radius: 12px; box-sizing: border-box; height: 100px; margin: 0px 0px 10px; width: 160px; background-image: url(&quot;./tiles/slack.com.png&quot;);" class="tile-image"></div><div style="font-size: 14px; line-height: 20px; overflow: hidden; text-align: center; text-overflow: ellipsis; white-space: nowrap; width: 100%; color: rgba(0, 0, 0, 0.8);" class="tile-title">browser.html Slack</div></a></div>
+  <div class="tiles">
+    <a class="tile" target="_blank" rel="noopener noreferrer"
+       href="https://duckduckgo.com">
+      <div class="tile-image duckduckgo"></div>
+      <div class="tile-title">DuckDuckGo</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="https://github.com">
+      <div class="tile-image github"></div>
+      <div class="tile-title">GitHub</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="https://wikipedia.org">
+      <div class="tile-image wikipedia"></div>
+      <div class="tile-title">Wikipedia</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="https://twitter.com">
+      <div class="tile-image twitter"></div>
+      <div class="tile-title">Twitter</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="https://reddit.com">
+      <div class="tile-image reddit"></div>
+      <div class="tile-title">Reddit</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="https://news.ycombinator.com">
+      <div class="tile-image hackernews"></div>
+      <div class="tile-title">Hacker News</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="https://servo.org">
+      <div class="tile-image servo"></div>
+      <div class="tile-title">Servo</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="https://www.rust-lang.org">
+      <div class="tile-image rust"></div>
+      <div class="tile-title">Rust</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="webrender-demos/moire.html">
+      <div class="tile-image moire"></div>
+      <div class="tile-title">Demo: Moire</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="webrender-demos/spheres.html">
+      <div class="tile-image spheres"></div>
+      <div class="tile-title">Demo: Spheres</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="webrender-demos/transparent_rects.html">
+      <div class="tile-image rects"></div>
+      <div class="tile-title">Demo: Transparent Rects</div>
+    </a>
+    <a class="tile"
+       target="_blank"
+       rel="noopener noreferrer"
+       href="webrender-demos/menus.html">
+      <div class="tile-image menus"></div>
+      <div class="tile-title">Demo: Menus</div>
+    </a>
+  </div>
 </body>
