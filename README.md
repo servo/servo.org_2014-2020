@@ -1,4 +1,8 @@
 [servo.org](http://servo.org/)
 ==============================
 
-The Servo website. Not much to see here yet.
+The source for the Servo website, not including subdomains.
+
+Subdomains repositories:
+* [starters.servo.org](https://github.com/servo/servo-starters/)
+* [download.servo.org](https://github.com/servo/download.servo.org)
