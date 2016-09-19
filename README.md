@@ -1,4 +1,4 @@
-[servo.org](http://servo.org/)
+[servo.org](https://servo.org/)
 ==============================
 
 The source for the Servo website, not including subdomains.
