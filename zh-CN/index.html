@@ -1,0 +1,204 @@
+<!doctype html>
+<html>
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Servo 一个并行浏览器引擎</title>
+    <link rel='stylesheet' href='css/bootstrap.css'/>
+    <link rel='stylesheet' href='css/style.css'/>
+</head>
+
+<body>
+<div class='container'>
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8'>
+            <h1 id='page-title' class='page-header'>Servo 一个并行浏览器引擎项目</h1>
+        </div>
+        <div class='col-sm-offset-2 col-sm-8'>
+            <h3 class='description'><b>Servo</b> 是一款现代化的高性能浏览器引擎，
+			专为应用和嵌入式应用而设计。
+            </h3>
+        </div>
+    </div>
+    <br>
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8 col-lg-4'>
+            <p class='info'>由 Mozilla 赞助并由全新的系统级编程语言 <a href='https://www.rust-lang.org'>Rust</a>,
+                编写，Servo 项目旨在实现更好的并行性，安全性，模块化以及高性能。
+            </p>
+	    <div class='row'>
+	      <div class='col-sm-12'>
+		<a class='btn btn-lg btn-primary center-block' href="https://download.servo.org">下载 Servo nightly build</a>
+		<br><br>
+	      </div>
+	    </div>
+        </div>
+        <div class='col-sm-8 col-lg-4 col-sm-push-2 col-lg-push-0'>
+            <div class='thumbnail text-center'>
+                <a href="screenshot.png">
+                    <img class='media-object' src='screenshot.png' alt="servo.org rendered with Servo"/>
+                </a>
+                本页在 2016 年 7 月 3 日在 Servo 中的截图
+            </div>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8'>
+
+            <div id='community'>
+
+                <p>Servo项目是一个由 Mozilla Research 创建的全球社区。其中有个人贡献者，也不乏 Mozilla 、三星这样的公司。</p>
+
+                <p> Servo 目前支持 Linux、macOS、Windows 和安卓。</p>
+
+            </div>
+        </div>
+
+    </div>
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8'>
+            <h2 class='header'>入门</h2>
+            <h3>系统所需</h3>
+            <p>
+                您要在<a href="https://github.com/servo/servo#prerequisites">我们的 GitHub 上</a>找到您需要在您的特定系统上安装的部件。
+                
+            </p>
+
+            <h3>构建</h3>
+            <p>Servo 是由 Cargo（Rust 的包管理器）构建的。 我们还使用 Mozilla 的 Mach 工具来编排构建和其他任务。</p>
+
+            <h4>一般构建</h4>
+            <p>在开发模式下构建 Servo。
+			这对开发很有帮助，但生成可执行文件极慢。</p>
+
+<pre><code>git clone https://github.com/servo/servo
+cd servo
+./mach build --dev
+./mach run tests/html/about-mozilla.html</code></pre>
+            <p>要进行基准测试、性能测试或真实使用，请添加
+                <code>--release</code> 标志以创建优化版本：</p>
+
+<pre><code>./mach build --release
+./mach run --release tests/html/about-mozilla.html</code></pre>
+
+            <h3>运行</h3>
+            <p>使用 <code>./mach run [url]</code> 运行 Servo。</p>
+
+            <h4>命令行参数</h4>
+
+            <ul>
+                <li><code>-p INTERVAL</code> 打开分析器并且每隔 INTERVAL 秒将信息转储到控制台
+                </li>
+                <li><code>-s SIZE</code> 设置绘画模块大小（默认值：512）
+                </li>
+                <li><code>-z</code> 禁用所有图形输出，用于运行 JS 或布局测试
+            </ul>
+
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8'>
+            <h2 class='header'>贡献</h2>
+
+            <p id='contributing'>Servo 项目鼓励有经验和新开发者的贡献。
+			查看页面底部链接以了解更多信息。为了 Servo 的蓬勃发展，加入全球数百贡献者团队吧！
+            </p>
+
+            <p>对 Servo 或其依赖关系的贡献应该用 GitHub Pull Request 的形式提交。 每个 pull 请求将由核心贡献者（有权限修补程序的人员）审核，合并到主分支中或给出反馈，以获取所需的更改。 所有贡献应遵循此形式，包括来自核心贡献者的贡献。
+            </p>
+
+            <p>如果您希望处理某个问题，请首先通过评论您要在其上工作的GitHub issue 进行声明，
+			此举是为了防止在同一问题上贡献者们的重复劳动。
+            </p>
+
+            <p>如果您在找那些对于初学者来说非常简单的漏洞，请查看 GitHub 上
+			<a href="https://github.com/servo/servo/labels/E-easy">E-Easy 的 issue 标签</a> 。
+            </p>
+
+            <p>有关如何开始修改 Servo 的详细信息，请参阅
+                <a href="https://github.com/servo/servo/blob/master/docs/HACKING_QUICKSTART.md">HACKING_QUICKSTART.md</a>。
+            </p>
+
+            <h3>Pull Request 检查清单</h3>
+
+            <ul>
+                <li>请从主分支分支，如果需要请在提交 Pull Request 之前重组到当前主分支。
+				如果它不能与主分支完全合并，您可能会被要求退回您的更改。
+                </li>
+
+                <li>请不要将子模块更新放在您的 Pull Request 中，除非它们影响提交。
+                </li>
+
+                <li>如果您的补丁没有得到审核，或者您需要特定的人来审核，
+				您可以 @ 请求审核人员在 pull 请求或评论中要求审核，
+				您也可以在 irc.mozilla.org的 #servo 上要求审核 。
+				如需中文服务请联系：[KiChjang](https://github.com/KiChjang) 和 [shinglyu](https://github.com/shinglyu)
+                </li>
+
+                <li>为新功能或修复错误添加相关测试。DOM 的修改通常需要一个 Web 平台测试；布局的修改需要一个参考测试（reftest）。有关详细信息，请参阅
+                    <a href="https://github.com/servo/servo/wiki/Testing">测试指南</a>。
+                </li>
+
+                <li>有关特定的git指令，请参阅 <a href="https://github.com/servo/servo/wiki/Github-workflow">GitHub 工作流程 101</a>。</li>
+            </ul>
+
+            <a class='btn btn-primary btn-large' role='button'
+               href='https://starters.servo.org/'>开始贡献</a>
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8'>
+            <h2 class='header'>联系我们</h2>
+
+            <p>
+                Servo 的贡献者经常在
+				<a href="https://wiki.mozilla.org/IRC">irc.mozilla.org.</a>
+				的 #servo 频道。您也可以加入
+                <a href="https://lists.mozilla.org/listinfo/dev-servo">dev-servo 邮件列表</a>。
+            </p>
+
+        </div>
+    </div>
+
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8'>
+            <h2 class='header'>行为守则</h2>
+
+            <p>
+                我们遵循
+                <a href="https://www.rust-lang.org/conduct.html">Rust 的行为守则。</a>
+            </p>
+
+        </div>
+    </div>
+	<footer>
+		<p>此页面汉化由 [3442853561](https://github.com/3442853561) 提供</p>
+    	<p>其他本土化页面：
+        	<a href="/bindex.html">English</a>
+    	</p>
+	</footer>
+    <div class='row'>
+        <div class='col-sm-offset-2 col-sm-8'>
+
+            <footer class='text-center'>
+                <div class='col-md-3'>
+                    <a href="https://www.github.com/servo">贡献</a>
+                </div>
+                <div class='col-md-3'>
+                    <a href='https://github.com/servo/servo/wiki/Roadmap'>Servo 的发展路线</a>
+                </div>
+                <div class='col-md-3'>
+                    <a href="https://blog.servo.org/">Servo 博客</a>
+                </div>
+                <div class='col-md-3'>
+                    <p class='text-muted'>#servo 在 irc.mozilla.org</p>
+                </div>
+            </footer>
+        </div>
+    </div>
+</div>
+</body>
+</html>
