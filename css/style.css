@@ -1,6 +1,6 @@
 footer {
   border-top: 1px solid #efefef;
-  margin-top: 5em;
+  padding-top: 5px;
 }
 
 .header {
@@ -27,6 +27,10 @@ footer {
 
 #contributing {
   font-size: 1.3em;
+}
+
+#languages {
+  margin-top: 5em;
 }
 
 .btn {
