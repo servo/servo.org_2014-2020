@@ -1,0 +1,222 @@
+<!doctype html>
+<html>
+
+<head>
+    <meta charset='utf-8'>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Servo 一個平行化瀏覽器引擎</title>
+    <link rel='stylesheet' href='/css/bootstrap.css' />
+    <link rel='stylesheet' href='/css/style.css' />
+    <style>
+        * {
+            font-family: 微軟正黑體, sans-serif
+        }
+    </style>
+</head>
+
+<body>
+    <div class='container'>
+        <div class='row'>
+            <div class='col-sm-12'>
+                <h1 id='page-title' class='page-header'>Servo 平行化瀏覽器引擎專案</h1>
+            </div>
+            <div class='col-sm-12'>
+                <h3 class='description'>
+                    <b>Servo</b>
+                    是一款專為應用軟體和嵌入式應用而設計的現代化的高效能瀏覽器引擎，
+                </h3>
+            </div>
+        </div>
+        <br>
+        <div class='row'>
+            <div class='col-sm-12 col-lg-6'>
+                <p class='info'>此專案由 Mozilla 贊助，並以全新的系統級程式語言 
+                    <a href='https://www.rust-lang.org'>Rust</a> 編寫，Servo 專案旨在實現更好的平行化、安全性、模組化以及高效能。
+                </p>
+                <div class='row'>
+                    <div class='col-sm-12'>
+                        <a class='btn btn-lg btn-primary center-block' href="https://download.servo.org">下載 Servo nightly build</a>
+                        <br>
+                        <br>
+                    </div>
+                </div>
+            </div>
+            <div class='col-sm-8 col-lg-6'>
+                <div class='thumbnail text-center'>
+                    <a href="/screenshot.png">
+                        <img class='media-object' src='/screenshot.png' alt="servo.org rendered with Servo" />
+                    </a>
+                    本頁在 2016 年 7 月 3 日在 Servo 中的截圖
+                </div>
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-sm-12'>
+
+                <div id='community'>
+                    <p>Servo 由 Mozilla Research 創立，專案目前由全球的社群一起建構。其中有個人貢獻者，也不乏 Mozilla 、Samsung 這樣的公司。</p>
+                    <p>Servo 目前支援 Linux、macOS、Windows 和 Android。</p>
+                </div>
+            </div>
+
+        </div>
+        <div class='row'>
+            <div class='col-sm-12'>
+                <h2 class='header'>入門</h2>
+                <h3>系統需求</h3>
+                <p>
+                    您要在
+                    <a href="https://github.com/servo/servo#prerequisites">我們的 GitHub 上</a>
+                    找到您需要在您的特定系統上安裝的套件。
+                </p>
+
+                <h3>編譯</h3>
+                <p>Servo 是由 Cargo（Rust 的套件管理程式）編譯的。 我們還使用 Mozilla 的 Mach 工具來編譯和執行其他任務。</p>
+
+                <h4>一般編譯</h4>
+                <p>在開發模式下編譯 Servo。 這對開發很有幫助，但生成的二進位制檔案極慢。
+                </p>
+
+                <pre><code>
+git clone https://github.com/servo/servo
+cd servo
+./mach build --dev
+./mach run tests/html/about-mozilla.html
+                </code></pre>
+                <p>要進行標準測試、效能測試或真實使用，請新增
+                    <code>--release</code> 標誌以建立優化版本：</p>
+
+                <pre><code>
+./mach build --release
+./mach run --release tests/html/about-mozilla.html
+                </code></pre>
+
+                <h3>執行</h3>
+                <p>使用
+                    <code>./mach run [url]</code> 執行 Servo。</p>
+                <h4>命令列參數</h4>
+
+                <ul>
+                    <li>
+                        <code>-p INTERVAL</code> 開啟分析器並且每隔 INTERVAL 秒將資訊轉儲到控制台
+                    </li>
+                    <li>
+                        <code>-s SIZE</code> 設定繪畫模組大小（預設值：512）
+                    </li>
+                    <li>
+                        <code>-z</code> 禁用所有圖形輸出，用於執行 JS 或佈局測試
+                </ul>
+
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-sm-12'>
+                <h2 class='header'>貢獻</h2>
+
+                <p id='contributing'>Servo 專案鼓勵有經驗的和新的開發者來貢獻。 檢視頁面底部的連結以瞭解更多資訊。為了 Servo 的蓬勃發展，一起加入全球數以百計貢獻者團隊吧！
+                </p>
+
+                <p>對 Servo 或其依賴關係的貢獻應該用 GitHub Pull Request 的形式提交。 每個 pull 請求將由核心貢獻者（有許可權修補程式的人員）審核，合併到主分支中；或給予回饋，以便知道如何更改。
+                    所有貢獻應遵循此形式，包括來自核心貢獻者的貢獻。
+                </p>
+
+                <p>如果您希望處理某個問題，請首先透過 GitHub issue 宣告您要在此事項上進行工作，此舉是為了防止在同一問題上貢獻者們重覆到。
+                </p>
+
+                <p>如果您在找那些對於初學者來說比較好上手的漏洞，請檢視 GitHub 上
+                    <a href="https://github.com/servo/servo/labels/E-easy">
+                        E-Easy 的 issue 標籤
+                    </a> 。
+                </p>
+
+                <p>有關如何開始修改 Servo 的詳細資訊，請參閱
+                    <a href="https://github.com/servo/servo/blob/master/docs/HACKING_QUICKSTART.md">
+                        HACKING_QUICKSTART.md
+                    </a>。
+                </p>
+
+                <h3>Pull Request 檢查清單</h3>
+
+                <ul>
+                    <li>請從 master 開分支，請在提交 Pull Request 之前 rebase 到當前 master。如果它不能與 master 完全合併，您可能會被要求退回您的更改。
+                    </li>
+
+                    <li>請不要將子模組更新放在您的 Pull Request 中，除非它們對 PR 有所影響。
+                    </li>
+
+                    <li>
+                        如果您的補丁沒有得到審核，或者您需要特定的人來審核， 您可以 @ 請求審核人員在 pull 請求或評論中要求審核， 您也可以在 irc.mozilla.org的 #servo 上要求審核 。 如需中文服務請聯絡：
+                        <a href="https://github.com/KiChjang">KiChjang</a> 和
+                        <a href="https://github.com/shinglyu">shinglyu</a>
+                    </li>
+
+                    <li>為新功能或修復錯誤新增相關測試。DOM 的修改通常需要一個 Web 平臺測試；版面佈局的修改需要一個 reftest。有關詳細資訊，請參閱
+                        <a href="https://github.com/servo/servo/wiki/Testing">測試指南</a>。
+                    </li>
+
+                    <li>有關特定的 git 指令，請參閱
+                        <a href="https://github.com/servo/servo/wiki/Github-workflow">GitHub 工作流程 101</a>。</li>
+                </ul>
+
+                <a class='btn btn-primary btn-large' role='button' href='https://starters.servo.org/'>開始貢獻</a>
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-sm-12'>
+                <h2 class='header'>聯絡我們</h2>
+
+                <p>
+                    Servo 的貢獻者經常在
+                    <a href="https://wiki.mozilla.org/IRC">irc.mozilla.org.</a>
+                    的 #servo 頻道。您也可以加入
+                    <a href="https://lists.mozilla.org/listinfo/dev-servo">dev-servo 郵件列表</a>。
+                </p>
+
+            </div>
+        </div>
+
+        <div class='row'>
+            <div class='col-sm-12'>
+                <h2 class='header'>行為守則</h2>
+                <p>
+                    我們遵循
+                    <a href="https://www.rust-lang.org/conduct.html">Rust 的行為守則。</a>
+                </p>
+            </div>
+        </div>
+
+        <div class='row' id='languages'>
+            <div class='col-sm-12'>
+                <p>其他本土化頁面：
+                    <a href="/index.html">English</a>,
+                    <a href="/zh-CN/index.html">简体中文</a>
+                </p>
+            </div>
+        </div>
+
+        <footer>
+            <div class='row text-center'>
+                <div class='col-sm-12'>
+                    <div class='col-md-3'>
+                        <a href="https://www.github.com/servo">貢獻</a>
+                    </div>
+                    <div class='col-md-3'>
+                        <a href='https://github.com/servo/servo/wiki/Roadmap'>Servo 的發展路線</a>
+                    </div>
+                    <div class='col-md-3'>
+                        <a href="https://blog.servo.org/">Servo 部落格</a>
+                    </div>
+                    <div class='col-md-3'>
+                        <p class='text-muted'>#servo 在 irc.mozilla.org</p>
+                    </div>
+                </div>
+            </div>
+        </footer>
+
+    </div>
+</body>
+
+</html>
