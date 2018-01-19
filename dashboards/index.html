@@ -1,0 +1,88 @@
+<!doctype html>
+<html>
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servo dashboards</title>
+  <link rel='stylesheet' href='../css/bootstrap.css'/>
+  <link rel='stylesheet' href='../css/style.css'/>
+</head>
+
+<body>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h1 id='page-title' class='page-header'>
+          Servo dashboards
+        </h1>
+      </div>
+      <div class='col-sm-12'>
+        <h3 class='description'>
+          <b>Servo</b> dashboards for performance and build times.
+        </h3>
+      </div>
+    </div>
+
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h2 class='header'>Build times</h2>
+
+        <p>
+          Build times are maintained by <a href="http://build.servo.org/">buildbot</a>,
+          and downloaded using the <a href="http://build.servo.org/json/help">JSON API</a>
+          by a <a href="https://github.com/servo/servo/blob/master/etc/ci/performance/download_buildbot_timings.py">script</a>
+          that is run nightly. The data is stored on <a href="http://servo-perf.s3.amazonaws.com/">S3</a>,
+          and imported into <a href="https://datastudio.google.com/open/1TeMocUMfKlg7qxQ2aTm5p0F1m7TIumF5">Google Data Studio</a>.
+        </p>
+
+        <iframe width="720" height="480" src="https://datastudio.google.com/embed/reporting/1TeMocUMfKlg7qxQ2aTm5p0F1m7TIumF5/page/GHZK"></iframe>
+
+      </div>
+
+      <div class='col-sm-12'>
+        <h2 class='header'>T5n performance</h2>
+
+        <p>
+          Servo nightly builds are run against the <a href="https://github.com/rwood-moz/talos-pagesets/">Talos TP5</a> test suite
+          by <a href="https://github.com/servo/servo/tree/master/etc/ci/performance">CI scripts</a>.
+          The data is stored on <a href="http://servo-perf.s3.amazonaws.com/">S3</a>,
+          and imported into <a href="https://datastudio.google.com/open/1b16G5pQNp2lE-1nNcPlOure9G0eR36cq">Google Data Studio</a>.
+        </p>
+
+        <iframe width="720" height="480" src="https://datastudio.google.com/embed/reporting/1b16G5pQNp2lE-1nNcPlOure9G0eR36cq/page/heOK"></iframe>
+
+      </div>
+      <div class='col-sm-12'>
+        <h2 class='header'>Archived web performance</h2>
+
+        <p>
+          Servo nightly builds are run against a <a href="https://github.com/servo/servo-warc-tests/">collection of archived web content</a>
+          by <a href="https://github.com/servo/servo-warc-tests/blob/master/run-warc-tests.sh">CI script</a>.
+          The data is stored on <a href="http://servo-perf.s3.amazonaws.com/">S3</a>,
+          and imported into <a href="https://datastudio.google.com/open/1eYJrJUUbLmvxEu_I-bM7s4fA-HlRvk-p">Google Data Studio</a>.
+        </p>
+
+        <iframe width="720" height="480" src="https://datastudio.google.com/embed/reporting/1eYJrJUUbLmvxEu_I-bM7s4fA-HlRvk-p/page/zMZM"></iframe>
+
+      </div>
+    </div>
+
+    <footer>
+      <div class='row text-center'>
+        <div class='col-md-3'>
+          <a href="https://github.com/servo">Contribute</a>
+        </div>
+        <div class='col-md-3'>
+          <a href='https://github.com/servo/servo/wiki/Roadmap'>Follow Servo's Roadmap</a>
+        </div>
+        <div class='col-md-3'>
+          <a href="https://blog.servo.org/">Read the Servo Blog</a>
+        </div>
+        <div class='col-md-3'>
+          <p class='text-muted'>#servo on irc.mozilla.org</p>
+        </div>
+      </div>
+    </footer>
+  </div>
+</body>
+</html>
