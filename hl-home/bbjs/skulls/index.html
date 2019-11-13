@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <script src="../shared/pep.js"></script>
+    <script src="../shared/dat.gui.js"></script>
+    <script src="../shared/ammo.js"></script>
+    <script src="../shared/cannon.js"></script>
+    <script src="../shared/Oimo.js"></script>
+    <script src="../shared/gltf_validator.js"></script>
+    <script src="../shared/babylon.max.js"></script>
+    <script src="../shared/babylon.inspector.bundle.js"></script>
+    <script src="../shared/babylonjs.materials.js"></script>
+    <script src="../shared/babylonjs.proceduralTextures.js"></script>
+    <script src="../shared/babylonjs.postProcess.js"></script>
+    <script src="../shared/babylonjs.loaders.js"></script>
+    <script src="../shared/babylonjs.serializers.js"></script>
+    <script src="../shared/babylon.gui.js"></script>
+    <style>
+      html, body {
+        overflow: hidden;
+        width: 100%;
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+
+      #renderCanvas {
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+    </style>
+    <link rel="stylesheet" href="../shared/tmp-fix.css">
+  </head>
+  <body>
+    <canvas id="renderCanvas"></canvas>
+    <script>
+        var canvas = document.getElementById("renderCanvas");
+
+        var engine = new BABYLON.Engine(canvas, true, { preserveDrawingBuffer: true, stencil: true });
+
+
+        // VR controller trigger to grab, release to throw
+        // Controller secondary button to reset objects
+
+        var createScene = async function () {
+            // Setup scene
+            var scene = new BABYLON.Scene(engine);
+            scene.clearColor = colors.navy;
+
+            // Create materials
+            var materials = {
+                blue: createMat(scene, colors.blue),
+                red: createMat(scene, colors.red),
+                navy: createMat(scene, colors.navy),
+                green: createMat(scene, colors.green)
+            }
+            scene.defaultMaterial = materials.navy;
+
+            // Environment
+            var light = new BABYLON.HemisphericLight("", new BABYLON.Vector3(0.1, 1, 0.3), scene);
+            light.intensity = 0.3;
+            var pointLight = new BABYLON.PointLight("light1", new BABYLON.Vector3(3, 10, 10), scene);
+            pointLight.position.y = 5;
+            pointLight.intensity = 0.7;
+            var camera = new BABYLON.FreeCamera("camera1", new BABYLON.Vector3(0, 0, -4), scene);
+            camera.minZ = 0;
+
+            // Use Ammo physics plugin
+            scene.enablePhysics(new BABYLON.Vector3(0, -9.8, 0), new BABYLON.AmmoJSPlugin());
+
+            // physics scene
+            var ground = BABYLON.Mesh.CreateBox("Ground", 1, scene);
+            ground.scaling = new BABYLON.Vector3(100, 1, 100);
+            ground.position.y = -2.0;
+            ground.physicsImpostor = new BABYLON.PhysicsImpostor(ground, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.5, restitution: 0.7 }, scene);
+
+            var table = BABYLON.Mesh.CreateBox("table", 1, scene);
+            table.scaling = new BABYLON.Vector3(1, 3, 1);
+            table.position.y = -2.0;
+            table.position.z = -2.9;
+            table.physicsImpostor = new BABYLON.PhysicsImpostor(table, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0, friction: 0.5, restitution: 0.7 }, scene);
+
+            // Import mesh and set colliders
+            var newMeshes = (await BABYLON.SceneLoader.ImportMeshAsync("", "../scenes/", "skull.babylon", scene)).meshes;
+
+            // Scale loaded mesh
+            newMeshes[0].scaling.scaleInPlace(0.01);
+            newMeshes[0].position.set(0, 0, 0);
+            newMeshes[0].isVisible = false;
+            var boundingMinMax = newMeshes[0].getHierarchyBoundingVectors()
+            var bounds = boundingMinMax.max.subtract(boundingMinMax.min);
+            var grabObjects = new Array();
+            for (var i = 0; i < 4; i++) {
+                var instance = newMeshes[0].createInstance(i + "index");
+                // Add colliders
+                var collidersVisible = false;
+                var sphereCollider = BABYLON.Mesh.CreateSphere("sphere1", 16, 0.5, scene);
+                sphereCollider.position.y = 0.08;
+                sphereCollider.isVisible = collidersVisible;
+                var boxCollider = BABYLON.Mesh.CreateBox("box1", 0.3, scene);
+                boxCollider.position.y = -0.13;
+                boxCollider.position.z = -0.13;
+                boxCollider.isVisible = collidersVisible;
+
+                // Create a physics root and add all children
+                var physicsRoot = BABYLON.Mesh.CreateBox(" ", 1, scene); //new BABYLON.Mesh("", scene);
+                physicsRoot.scaling.copyFrom(bounds)
+                physicsRoot.isVisible = false;
+                physicsRoot.rotationQuaternion = new BABYLON.Quaternion();
+                physicsRoot.addChild(instance);
+                physicsRoot.addChild(boxCollider);
+                physicsRoot.addChild(sphereCollider);
+                physicsRoot.position.y += 3;
+                physicsRoot.scaling.scaleInPlace(0.3);
+
+                // Enable physics on colliders first then physics root of the mesh
+                boxCollider.physicsImpostor = new BABYLON.PhysicsImpostor(boxCollider, BABYLON.PhysicsImpostor.BoxImpostor, { mass: 0 }, scene);
+                sphereCollider.physicsImpostor = new BABYLON.PhysicsImpostor(sphereCollider, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 0 }, scene);
+                physicsRoot.physicsImpostor = new BABYLON.PhysicsImpostor(physicsRoot, BABYLON.PhysicsImpostor.NoImpostor, { mass: 3 }, scene);
+
+                // Orient the physics root
+                physicsRoot.rotation.x = Math.PI / 5;
+                physicsRoot.rotation.z = Math.PI / 6;
+                physicsRoot.position.y += i
+                physicsRoot.position.z -= 2.9
+                grabObjects.push(physicsRoot);
+            }
+
+            // Initialize webXR
+            var xr = await scene.createDefaultXRExperienceAsync({ floorMeshes: [ground] });
+            xr.baseExperience.onStateChangedObservable.add((state)=>{
+                if(state === BABYLON.WebXRState.IN_XR){
+                    // When entering webXR, position the user's feet at 0,-2, 0
+                    xr.baseExperience.setPositionOfCameraUsingContainer(new BABYLON.Vector3(0,xr.baseExperience.camera.position.y -2,0))
+                }        
+            })
+
+            // Setup controller data
+            var controllers = [
+                {
+                    hand: "left",
+                    vrController: null,
+                    mesh: BABYLON.Mesh.CreateBox("", 0.1, scene),
+                    lastTriggerValue: 0,
+                    secondaryButtonValue: 0,
+                    selectedMesh: null,
+                    virtualSelected: new BABYLON.AbstractMesh("", scene),
+                },
+                {
+                    hand: "right",
+                    vrController: null,
+                    mesh: BABYLON.Mesh.CreateBox("", 0.1, scene),
+                    lastTriggerValue: 0,
+                    secondaryButtonValue: 0,
+                    selectedMesh: null,
+                    virtualSelected: new BABYLON.AbstractMesh("", scene),
+                }
+            ]
+            controllers.forEach((controller) => {
+                controller.mesh.rotationQuaternion = new BABYLON.Quaternion();
+                controller.mesh.scaling.z = 2;
+                controller.mesh.isVisible = false;
+                controller.virtualSelected.parent = controller.mesh;
+                controller.virtualSelected.rotationQuaternion = new BABYLON.Quaternion();
+            });
+
+            xr.input.onControllerAddedObservable.add((ctrl) => {
+                let controller = controllers[1];
+                if (ctrl.inputSource.handedness === "left") {
+                    controller = controllers[0];
+                }
+                controller.vrController = ctrl;
+                controller.mesh.isVisible = true;
+
+                // Make controller NoImpostor with mass of 0, this makes it pass through objects but still gets updated kinematic velocity data used when grabbing
+                controller.mesh.physicsImpostor = new BABYLON.PhysicsImpostor(controller.mesh, BABYLON.PhysicsImpostor.NoImpostor, { mass: 0 }, scene);
+
+                if (controller.vrController.gamepadController) {
+                    // Controller events
+                    controller.vrController.gamepadController.onSecondaryButtonStateChangedObservable.add((state) => {
+                        controller.secondaryButtonValue = state.value;
+                    })
+                    controller.vrController.gamepadController.onTriggerStateChangedObservable.add((state) => {
+                        if ((!state.pressed && controller.selectedMesh) || (controller.lastTriggerValue > 0.1 && state.value <= 0.1 && controller.selectedMesh)) {
+                            var angularVelocity = controller.mesh.physicsImpostor.getAngularVelocity();
+                            controller.selectedMesh.physicsImpostor.setAngularVelocity(angularVelocity);
+                            controller.selectedMesh = null;
+                        }
+
+                        if (state.pressed || (controller.lastTriggerValue < 0.1 && state.value >= 0.1)) {
+                            grabObjects.forEach((s) => {
+                                if (s.intersectsMesh(controller.mesh, true, false)) {
+                                    // Ungrab if another controller was previously holding it
+                                    controllers.forEach((c) => {
+                                        if (c.selectedMesh == s) {
+                                            c.selectedMesh = null;
+                                        }
+                                    });
+
+                                    // Grab the object
+                                    controller.selectedMesh = s;
+                                    controller.virtualSelected.setAbsolutePosition(s.position);
+                                    controller.virtualSelected.rotationQuaternion.copyFrom(BABYLON.Quaternion.Inverse(controller.mesh.rotationQuaternion).multiply(s.rotationQuaternion))
+                                }
+                            });
+                        }
+                        controller.lastTriggerValue = state.value;
+                    })
+                }
+            })
+
+            scene.onBeforeRenderObservable.add(() => {
+                controllers.forEach((controller) => {
+                    if (controller.vrController) {
+                        // Update controller mesh position
+                        controller.mesh.position.copyFrom(controller.vrController.pointer.getAbsolutePosition())
+                        controller.mesh.rotationQuaternion.copyFrom(controller.vrController.pointer.rotationQuaternion)
+                        controller.mesh.computeWorldMatrix();
+
+                        if (controller.secondaryButtonValue >= 0.9) {
+                            // Move all objects above controller if the secondary button is pressed
+                            grabObjects.forEach((sphere, index) => {
+                                sphere.position.copyFrom(controller.mesh.position)
+                                sphere.position.addInPlace(controller.mesh.up.scale(index * 0.2 + 0.2))
+
+                                // Update linear velocity from hands angular velocity
+                                //https://www.quora.com/How-is-the-direction-of-angular-and-linear-velocity-related
+                                var radius = sphere.position.subtract(controller.mesh.position)
+                                var angularVelocity = controller.mesh.physicsImpostor.getAngularVelocity();
+                                sphere.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Cross(angularVelocity, radius).add(controller.mesh.physicsImpostor.getLinearVelocity()))
+                            })
+                        }
+
+                        if (controller.selectedMesh) {
+                            // Update grabbed mesh if one exists
+                            controller.selectedMesh.position.copyFrom(controller.virtualSelected.getAbsolutePosition());
+                            controller.selectedMesh.rotationQuaternion.copyFrom(controller.mesh.rotationQuaternion.multiply(controller.virtualSelected.rotationQuaternion))
+                            var radius = controller.selectedMesh.position.subtract(controller.mesh.position)
+                            var angularVelocity = controller.mesh.physicsImpostor.getAngularVelocity();
+                            controller.selectedMesh.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Cross(angularVelocity, radius).add(controller.mesh.physicsImpostor.getLinearVelocity()))
+                            controller.selectedMesh.physicsImpostor.setAngularVelocity(new BABYLON.Vector3());
+                        }
+                    }
+                })
+            })
+
+            return scene;
+        };
+
+        // Colors
+        var colors = {
+            seaFoam: BABYLON.Color3.FromHexString("#16a085"),
+            green: BABYLON.Color3.FromHexString("#27ae60"),
+            blue: BABYLON.Color3.FromHexString("#2980b9"),
+            purple: BABYLON.Color3.FromHexString("#8e44ad"),
+            navy: BABYLON.Color3.FromHexString("#2c3e50"),
+            yellow: BABYLON.Color3.FromHexString("#f39c12"),
+            orange: BABYLON.Color3.FromHexString("#d35400"),
+            red: BABYLON.Color3.FromHexString("#c0392b"),
+            white: BABYLON.Color3.FromHexString("#bdc3c7"),
+            gray: BABYLON.Color3.FromHexString("#7f8c8d")
+        }
+
+        // Create material helper
+        var createMat = (scene, color) => {
+            var mat = new BABYLON.StandardMaterial("", scene);
+            mat.diffuseColor = color;
+            mat.specularColor = BABYLON.Color3.FromHexString("#555555");
+            mat.specularPower = 1;
+            mat.emissiveColor = color.clone().scale(0.7);
+            mat.backFaceCulling = false;
+            return mat;
+        }
+
+        createScene().then(scene => {
+          engine.runRenderLoop(() => scene.render());
+          window.addEventListener("resize", function () {
+            engine.resize();
+          });
+        });
+
+    </script>
+    
+  </body>
+</html>

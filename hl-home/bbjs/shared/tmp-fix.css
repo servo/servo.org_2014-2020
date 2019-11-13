@@ -1,0 +1,9 @@
+/* Temporary stylesheet to work around non-visible SVG image */
+.babylonVRicon {
+  background: black !important;
+  border: 2px solid white !important;
+  color: white !important;
+}
+.babylonVRicon:before {
+  content: "Enter VR";
+}
