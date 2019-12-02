@@ -1,144 +1,124 @@
+<!DOCTYPE html>
 <html>
-<head>
-    <meta charset="utf-8">
-    <title>Servo launch page</title>
+  <head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
     <style>
-      .tiles {
-      font-family: "San Francisco Text", "Helvetica Neue", "Helvetica", sans-serif;
-      width: 420px;
-      margin: auto;
-      padding: 20px 0;
+      html {
+        background-color: rgb(30, 20, 56);
+        background-image: url(./background.png);
+        background-size: auto 100%;
+        background-attachment: fixed;
+        background-position: top right;
+        background-repeat: no-repeat;
+        font-family: 'fira sans', Arial;
+        color: white;
       }
-      .tile {
-      float: left;
-      margin: 10px;
-      width: 120px;
-      text-decoration: none;
+
+      header {
+        margin: 2rem;
+        background-image: url(./logo.png);
+        background-size: auto 4rem;
+        background-repeat: no-repeat;
       }
-      .tile-image {
-      background-color: rgb(255, 255, 255);
-      background-position: center center;
-      background-size: cover;
-      border: 5px solid rgba(180, 180, 180, 0.25);
-      border-radius: 12px;
-      box-sizing: border-box;
-      height: 100px;
-      width: 120px;
+      header > h1, header > h2 {
+        margin: 0 0 0 5rem;
+        font-weight: normal;
       }
-      .tile-image:hover {
-      border: 5px solid rgba(140, 100, 200, 0.8);
+      h1 {
+        font-size: 2rem;
       }
-      .tile-title {
-      font-size: 16px;
-      line-height: 20px;
-      overflow: hidden;
-      text-align: center;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      width: 100%;
-      margin-top: 5px;
-      color: rgba(0, 0, 0, 0.8);
+      h2 {
+        font-size: 1rem;
       }
-      .servo {
-      background-image: url(./tiles/servo.png);
+      section {
+        display: flex;
+        flex-wrap: wrap;
       }
-      .webxr-ar {
-      background-image: url(./tiles/webxr-ar.jpg);
+      a, a:visited {
+        color: unset;
       }
-      .basic {
-      background-image: url(./tiles/basic.jpg);
+      section > a, section > a:visited {
+        margin: 1rem;
+        min-height: 6rem;
+        box-shadow: 0 0 10px -5px black;
+        display: block;
+        background: white;
+        background-repeat: no-repeat;
+        background-size: 6rem 6rem;
+        background-position: top left;
+        padding: 0 1rem 0 7rem;
+        text-decoration: none;
+        color: black;
       }
-      .hill_valley {
-      background-image: url(./tiles/hill_valley.jpg);
+      section > a:hover {
+        transform: scale(1.1);
       }
-      .skulls {
-      background-image: url(./tiles/skulls.jpg);
+      section > a {
+        transition: transform ease 100ms;
       }
-      .buttons {
-      background-image: url(./tiles/buttons.jpg);
+      section > a > p {
+        margin: 0;
       }
-      .espilit {
-      background-image: url(./tiles/espilit.jpg);
+
+      h3 {
+        margin: 1rem 0;
+        background: black;
+        display: inline-block;
+        color: white;
+        font-weight: 400;
+        padding: 0 0.5rem;
       }
-      .mansion {
-      background-image: url(./tiles/mansion.jpg);
-      }
-      .paint {
-      background-image: url(./tiles/paint.jpg);
-      }
-      .ballshooter {
-      background-image: url(./tiles/ballshooter.jpg);
-      }
-      .lorenz {
-      background-image: url(./tiles/lorenz.jpg);
-      }
-      .dragging {
-      background-image: url(./tiles/dragging.jpg);
+
+      #featured > a {
+        border: 1rem solid white;
       }
     </style>
-</head>
-<body>
-  <div class="tiles">
-    <a class="tile"
-       href="https://servo.org">
-      <div class="tile-image servo"></div>
-      <div class="tile-title">Servo</div>
-    </a>
-    <a class="tile"
-       href="https://manishearth.github.io/webxr-three/examples/webvr_paint.html">
-      <div class="tile-image paint"></div>
-      <div class="tile-title">Paint</div>
-    </a>
-    <a class="tile"
-       href="https://manishearth.github.io/webxr-three/examples/webvr_lorenzattractor.html">
-      <div class="tile-image lorenz"></div>
-      <div class="tile-title">Lorenz Attractor</div>
-    </a>
-    <a class="tile"
-       href="https://manishearth.github.io/webxr-three/examples/webvr_dragging.html">
-      <div class="tile-image dragging"></div>
-      <div class="tile-title">Dragging shapes</div>
-    </a>
-    <a class="tile"
-       href="https://manishearth.github.io/webxr-three/examples/webvr_ballshooter.html">
-      <div class="tile-image ballshooter"></div>
-      <div class="tile-title">Ball Shooter</div>
-    </a>
-    <a class="tile"
-       href="./webxr-ar.html">
-      <div class="tile-image webxr-ar"></div>
-      <div class="tile-title">webxr-ar</div>
-    </a>
-    <a class="tile"
-       href="./bbjs/basic/">
-      <div class="tile-image basic"></div>
-      <div class="tile-title">Basic</div>
-    </a>
-    <a class="tile"
-       href="./bbjs/mansion">
-      <div class="tile-image mansion"></div>
-      <div class="tile-title">Mansion</div>
-    </a>
-    <a class="tile"
-       href="./bbjs/hill_valley">
-      <div class="tile-image hill_valley"></div>
-      <div class="tile-title">Hill Valley</div>
-    </a>
-    <a class="tile"
-       href="./bbjs/espilit">
-      <div class="tile-image espilit"></div>
-      <div class="tile-title">Espilit</div>
-    </a>
-    <a class="tile"
-       href="./bbjs/buttons">
-      <div class="tile-image buttons"></div>
-      <div class="tile-title">Buttons</div>
-    </a>
-    <a class="tile"
-       href="./bbjs/skulls">
-      <div class="tile-image skulls"></div>
-      <div class="tile-title">Skulls</div>
-    </a>
-  </div>
-</body>
-
+  </head>
+  <body>
+    <header>
+      <h1>Firefox Reality</h1>
+      <h2>HoloLens Home: WebXR demos.</h2>
+    </header>
+    <section id="featured">
+      <a style="background-image:url(./tiles/hill_valley.jpg)" href="./bbjs/hill_valley">
+        <h3>Hill Valley</h3>
+        <p>#BabylonJS #webvr</p>
+      </a>
+      <a style="background-image:url(./tiles/paint.jpg)" href="https://manishearth.github.io/webxr-three/examples/webvr_paint.html">
+        <h3>Paint</h3>
+        <p>#threeJS #webar</p>
+      </a>
+    </section>
+    <section>
+      <a style="background-image:url(./tiles/buttons.jpg)" href="./bbjs/buttons">
+        <h3>Drumming</h3>
+      </a>
+      <a style="background-image:url(./tiles/basic.jpg)" href="./bbjs/basic/">
+        <h3>Color Picker</h3>
+      </a>
+      <a style="background-image:url(./tiles/dragging.jpg)" href="https://manishearth.github.io/webxr-three/examples/webvr_dragging.html">
+        <h3>Dragging</h3>
+      </a>
+      <a style="background-image:url(./tiles/espilit.jpg)" href="./bbjs/espilit">
+        <h3>Espilit</h3>
+      </a>
+      <a style="background-image:url(./tiles/lorenz.jpg)" href="https://manishearth.github.io/webxr-three/examples/webvr_lorenzattractor.html">
+        <h3>Lorenz Attractor</h3>
+      </a>
+      <a style="background-image:url(./tiles/mansion.jpg)" href="./bbjs/mansion/">
+        <h3>Mansion</h3>
+      </a>
+      <a style="background-image:url(./tiles/skulls.jpg)" href="./bbjs/skulls">
+        <h3>Skulls Juggling</h3>
+      </a>
+      <a style="background-image:url(./tiles/webxr-ar.jpg)" href="./webxr-ar.html">
+        <h3>Basic</h3>
+      </a>
+      <a style="background-image:url(./tiles/ballshooter.jpg)" href="https://manishearth.github.io/webxr-three/examples/webvr_ballshooter.html">
+        <h3>Ball Shooter</h3>
+      </a>
+    </section>
+  </body>
+</html>
