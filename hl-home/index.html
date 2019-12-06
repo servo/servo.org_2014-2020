@@ -6,14 +6,23 @@
     <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
     <style>
       html {
+        font-family: 'fira sans', Arial;
+        color: white;
+      }
+
+      #background {
+        z-index: -1;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
         background-color: rgb(30, 20, 56);
         background-image: url(./background.png);
         background-size: auto 100%;
         background-attachment: fixed;
         background-position: top right;
         background-repeat: no-repeat;
-        font-family: 'fira sans', Arial;
-        color: white;
       }
 
       header {
@@ -77,6 +86,7 @@
     </style>
   </head>
   <body>
+    <div id="background"></div>
     <header>
       <h1>Firefox Reality</h1>
       <h2>HoloLens Home: WebXR demos.</h2>
