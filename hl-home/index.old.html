@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://code.cdn.mozilla.net/fonts/fira.css">
+    <style>
+      html {
+        font-family: 'fira sans', Arial;
+        color: white;
+      }
+
+      #background {
+        z-index: -1;
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: rgb(30, 20, 56);
+        /* Hide image until we have a better image cache story in Servo.
+           See https://github.com/servo/servo/issues/25471
+        background-image: url(./background.png);
+        */
+        background-size: auto 100%;
+        background-attachment: fixed;
+        background-position: top right;
+        background-repeat: no-repeat;
+      }
+
+      header {
+        margin: 2rem;
+        background-image: url(./logo.png);
+        background-size: auto 4rem;
+        background-repeat: no-repeat;
+      }
+      header > h1, header > h2 {
+        margin: 0 0 0 5rem;
+        font-weight: normal;
+      }
+      h1 {
+        font-size: 2rem;
+      }
+      h2 {
+        font-size: 1rem;
+      }
+      section {
+        display: flex;
+        flex-wrap: wrap;
+      }
+      a, a:visited {
+        color: unset;
+      }
+      section > a, section > a:visited {
+        margin: 1rem;
+        min-height: 6rem;
+        box-shadow: 0 0 10px -5px black;
+        display: block;
+        background: white;
+        background-repeat: no-repeat;
+        background-size: 6rem 6rem;
+        background-position: top left;
+        padding: 0 1rem 0 7rem;
+        text-decoration: none;
+        color: black;
+      }
+      section > a:hover {
+        transform: scale(1.1);
+      }
+      section > a {
+        transition: transform ease 100ms;
+      }
+      section > a > p {
+        margin: 0;
+      }
+
+      h3 {
+        margin: 1rem 0;
+        background: black;
+        display: inline-block;
+        color: white;
+        font-weight: 400;
+        padding: 0 0.5rem;
+      }
+
+      #featured > a {
+        border: 1rem solid white;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="background"></div>
+    <header>
+      <h1>Firefox Reality</h1>
+      <h2>HoloLens Home: WebXR demos.</h2>
+    </header>
+    <section id="featured">
+      <a style="background-image:url(./tiles/hill_valley.jpg)" href="./bbjs.old/#JA1ND3#163">
+        <h3>Hill Valley</h3>
+        <p>#BabylonJS #webvr</p>
+      </a>
+      <a style="background-image:url(./tiles/paint.jpg)" href="https://threejs.org/examples/webxr_vr_paint.html">
+        <h3>Paint</h3>
+        <p>#threeJS #webar</p>
+      </a>
+    </section>
+    <section>
+      <a style="background-image:url(./tiles/buttons.jpg)" href="./bbjs.old/#8Y780Y#57">
+        <h3>Drumming</h3>
+      </a>
+      <a style="background-image:url(./tiles/basic.jpg)" href="./bbjs.old/#PPM311#17">
+        <h3>Color Picker</h3>
+      </a>
+      <a style="background-image:url(./tiles/dragging.jpg)" href="https://threejs.org/examples/webxr_vr_dragging.html">
+        <h3>Dragging</h3>
+      </a>
+      <a style="background-image:url(./tiles/espilit.jpg)" href="./bbjs.old/#JA1ND3#164">
+        <h3>Espilit</h3>
+      </a>
+      <a style="background-image:url(./tiles/lorenz.jpg)" href="https://threejs.org/examples/webxr_vr_lorenzattractor.html">
+        <h3>Lorenz Attractor</h3>
+      </a>
+      <a style="background-image:url(./tiles/mansion.jpg)" href="./bbjs.old/#JA1ND3#161">
+        <h3>Mansion</h3>
+      </a>
+      <a style="background-image:url(./tiles/skulls.jpg)" href="./bbjs.old/#ZNX043#15">
+        <h3>Skulls Pickup</h3>
+      </a>
+      <a style="background-image:url(./tiles/webxr-ar.jpg)" href="./webxr-ar.html">
+        <h3>Basic</h3>
+      </a>
+      <a style="background-image:url(./tiles/ballshooter.jpg)" href="https://threejs.org/examples/webxr_vr_ballshooter.html">
+        <h3>Ball Shooter</h3>
+      </a>
+    </section>
+  </body>
+</html>
