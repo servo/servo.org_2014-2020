@@ -1,0 +1,82 @@
+  html {
+    font-family: 'fira sans', Arial;
+    color: white;
+  }
+
+  #background {
+    z-index: -1;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background-color: rgb(30, 20, 56);
+    /* Hide image until we have a better image cache story in Servo.
+       See https://github.com/servo/servo/issues/25471
+    background-image: url(./background.png);
+    */
+    background-size: auto 100%;
+    background-attachment: fixed;
+    background-position: top right;
+    background-repeat: no-repeat;
+  }
+
+  header {
+    margin: 2rem;
+    background-image: url(./logo.png);
+    background-size: auto 4rem;
+    background-repeat: no-repeat;
+  }
+  header > h1, header > h2 {
+    margin: 0 0 0 5rem;
+    font-weight: normal;
+  }
+  h1 {
+    font-size: 2rem;
+  }
+  h2 {
+    font-size: 1rem;
+  }
+  section {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  a, a:visited {
+    color: unset;
+  }
+  section > a, section > a:visited {
+    margin: 1rem;
+    min-height: 6rem;
+    box-shadow: 0 0 10px -5px black;
+    display: block;
+    background: white;
+    background-repeat: no-repeat;
+    background-size: 6rem 6rem;
+    background-position: top left;
+    padding: 0 1rem 0 7rem;
+    text-decoration: none;
+    color: black;
+  }
+  section > a:hover {
+    transform: scale(1.1);
+  }
+  section > a {
+    transition: transform ease 100ms;
+  }
+  section > a > p {
+    margin: 0;
+  }
+
+  h3 {
+    margin: 1rem 0;
+    background: black;
+    display: inline-block;
+    color: white;
+    font-weight: 400;
+    padding: 0 0.5rem;
+  }
+
+  #featured > a {
+    border: 1rem solid white;
+  }
+
