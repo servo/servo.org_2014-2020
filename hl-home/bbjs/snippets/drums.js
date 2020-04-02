@@ -3,25 +3,22 @@ var createScene = async function () {
     var index = 0; 
 
     var scene = new BABYLON.Scene(engine);
-    var camera = new BABYLON.ArcRotateCamera("cam", -Math.PI / 2, Math.PI / 2, 20, BABYLON.Vector3.Zero());
+
+    var camera = new BABYLON.FreeCamera("cam", BABYLON.Vector3.Zero(), scene);
+    camera.attachControl(canvas, true);
+
     var light = new BABYLON.HemisphericLight("sun", new BABYLON.Vector3(0,1,0), scene);
     var anchor = new BABYLON.TransformNode("");
-    
-    camera.wheelDeltaPercentage = 0.01;
-    camera.attachControl(canvas, true);
-    camera.lowerRadiusLimit = 10;
-    camera.upperRadiusLimit = 30;
-
-    // Create the 3D UI manager
-    var manager = new BABYLON.GUI.GUI3DManager(scene);
 
     var panel = new BABYLON.GUI.CylinderPanel();
     panel.margin = 0.75;
- 
-    manager.addControl(panel);
     panel.linkToTransformNode(anchor);
     panel.position.z = -1.5;
-    
+
+    // Create the 3D UI manager
+    var manager = new BABYLON.GUI.GUI3DManager(scene);
+    manager.addControl(panel);
+
     // The first parameter can be used to specify which mesh to import. Here we import all meshes
     BABYLON.SceneLoader.ImportMesh("", "https://david.blob.core.windows.net/babylonjs/MRTK/", "pushButton.glb", scene, function (newMeshes) {
         pushButtonCore = newMeshes[0];
@@ -69,9 +66,14 @@ var createScene = async function () {
         panel.blockLayout = false;
     }
 
-    var xr = await scene.createDefaultXRExperienceAsync({floorMeshes: []})
-    // default is vr, change to ar
-    xr.enterExitUI["_buttons"][0].sessionMode = "immersive-ar";
+    const ar_supported = await navigator.xr.isSessionSupported("immersive-ar");
+    const xr = await scene.createDefaultXRExperienceAsync({
+        floorMeshes: [],
+        uiOptions: {
+            sessionMode: ar_supported ? "immersive-ar" : "immersive-vr"
+        },
+        inputOptions: { doNotLoadControllerMeshes: false}
+    });
     
     return scene;
 }
