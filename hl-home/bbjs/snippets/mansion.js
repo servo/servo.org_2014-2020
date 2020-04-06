@@ -9,5 +9,7 @@ var createScene = function () {
             var xr = await scene.createDefaultXRExperienceAsync({floorMeshes: [scene.getMeshByName("Allée")]});
         });
 
+    // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
+    scene.constantlyUpdateMeshUnderPointer = true;
     return scene;
 };

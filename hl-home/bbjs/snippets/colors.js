@@ -56,6 +56,8 @@ var createScene = async function () {
         floorMeshes: [environment.ground]
     });
 
+    // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
+    scene.constantlyUpdateMeshUnderPointer = true;
     return scene;
 
 };

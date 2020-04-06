@@ -75,5 +75,7 @@ var createScene = async function () {
         inputOptions: { doNotLoadControllerMeshes: false}
     });
     
+    // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
+    scene.constantlyUpdateMeshUnderPointer = true;
     return scene;
 }

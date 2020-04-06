@@ -242,5 +242,7 @@ var createScene = async function () {
         spheres.splice(0, spheres.length, ...alive);
     });
 
+    // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
+    scene.constantlyUpdateMeshUnderPointer = true;
     return scene;
 };
