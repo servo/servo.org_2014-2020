@@ -58,6 +58,9 @@ var createScene = async function () {
         uiOptions: { sessionMode: "immersive-" + mode }
     });
 
+    const fm = xr.baseExperience.featuresManager;
+    fm.enableFeature(BABYLON.WebXRFeatureName.BACKGROUND_REMOVER);
+
     // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
     scene.constantlyUpdateMeshUnderPointer = true;
     return scene;

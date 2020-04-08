@@ -117,8 +117,11 @@ var createScene = async function () {
         uiOptions: { sessionMode: "immersive-" + mode }
     });
 
+    const fm = xr.baseExperience.featuresManager;
+    fm.enableFeature(BABYLON.WebXRFeatureName.BACKGROUND_REMOVER);
+
     // enable physics
-    const xrPhysics = xr.baseExperience.featuresManager.enableFeature(BABYLON.WebXRFeatureName.PHYSICS_CONTROLLERS, "latest", {
+    const xrPhysics = fm.enableFeature(BABYLON.WebXRFeatureName.PHYSICS_CONTROLLERS, "latest", {
         xrInput: xr.input,
         physicsProperties: {
             restitution: 0.5,
