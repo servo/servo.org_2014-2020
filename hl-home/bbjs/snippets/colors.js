@@ -51,9 +51,11 @@ var createScene = async function () {
     });
     panel.addControl(picker);
 
-    // XR
-    const xrHelper = await scene.createDefaultXRExperienceAsync({
-        floorMeshes: [environment.ground]
+    // Enable XR
+    const mode = await navigator.xr.isSessionSupported("immersive-ar") ? "ar" : "vr";
+    const xr = await scene.createDefaultXRExperienceAsync({
+        floorMeshes: [environment.ground],
+        uiOptions: { sessionMode: "immersive-" + mode }
     });
 
     // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
