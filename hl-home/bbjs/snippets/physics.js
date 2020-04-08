@@ -146,7 +146,7 @@ var createScene = async function () {
     scene.onPointerObservable.add((event) => {
         if (event.type === BABYLON.PointerEventTypes.POINTERPICK) {
             const inputSource = xr.pointerSelection.getXRControllerByPointerId(event.event.pointerId);
-            if (!inputSource || (inputSource && inputSource.motionController.handness === 'right')) {
+            if (!inputSource || (inputSource && inputSource.inputSource.handedness === 'right')) {
                 const bullet = BABYLON.MeshBuilder.CreateSphere('bullet', { diameter: 0.2 });
                 // if (inputSource) {
                 //     inputSource.getWorldPointerRayToRef(tmpRay);
@@ -157,98 +157,114 @@ var createScene = async function () {
                 bullet.position.addInPlace(ray.direction);
                 bullet.physicsImpostor = new BABYLON.PhysicsImpostor(bullet, BABYLON.PhysicsImpostor.SphereImpostor, { mass: 3 });
                 bullet.physicsImpostor.setLinearVelocity(ray.direction.scale(400));
+                bullets.push(bullet);
+            }
+
+            if (inputSource && inputSource.inputSource.handedness === 'left') {
+                for (var x = 0; x < 7; x++) {
+                    for (var z = 0; z < 7; z++) {
+                        const box1 = towerMeshes[x * 7 + z]
+                        box1.position.x = (x - 4) * 6;
+                        box1.position.y = 2 + z * 2;
+                        box1.position.z = 100;
+                        box1.rotationQuaternion = new BABYLON.Quaternion();
+                        box1.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+                        box1.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+                    }
+                }
+                let bullt;
+                while (bullt = bullets.pop()) {
+                    bullt.dispose();
+                }
+                Object.keys(observers).forEach(id => {
+                    xr.baseExperience.sessionManager.onXRFrameObservable.remove(observers[id]);
+                    observers[id] = null;
+                });
             }
         }
     })
 
+    const onLeftHandSqueeze = () => {
+        controller.getWorldPointerRayToRef(tmpRay, true);
+        tmpRay.direction.scaleInPlace(1.5);
+        const position = controller.grip ? controller.grip.position : controller.pointer.position;
+
+        let mesh = scene.meshUnderPointer;
+        if (xr.pointerSelection.getMeshUnderPointer) {
+            mesh = xr.pointerSelection.getMeshUnderPointer(controller.uniqueId);
+        }
+        if (mesh && mesh !== ground && mesh.physicsImpostor) {
+            const animatable = BABYLON.Animation.CreateAndStartAnimation('meshmove',
+                mesh, 'position', 30, 15, mesh.position.clone(),
+                position.add(tmpRay.direction),
+                BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
+                new BABYLON.BezierCurveEase(0.3, -0.75, 0.7, 1.6), () => {
+                    if (!mesh) return;
+                    meshesUnderPointer[controller.uniqueId] = mesh;
+                    observers[controller.uniqueId] = xr.baseExperience.sessionManager.onXRFrameObservable.add(() => {
+                        const delta = (xr.baseExperience.sessionManager.currentTimestamp - lastTimestamp);
+                        lastTimestamp = xr.baseExperience.sessionManager.currentTimestamp;
+                        controller.getWorldPointerRayToRef(tmpRay, true);
+                        tmpRay.direction.scaleInPlace(1.5);
+                        const position = controller.grip ? controller.grip.position : controller.pointer.position;
+                        tmpVec.copyFrom(position);
+                        tmpVec.addInPlace(tmpRay.direction);
+                        tmpVec.subtractToRef(oldPos, tmpVec);
+                        tmpVec.scaleInPlace(1000 / delta);
+                        meshesUnderPointer[controller.uniqueId].position.copyFrom(position);
+                        meshesUnderPointer[controller.uniqueId].position.addInPlace(tmpRay.direction);
+                        oldPos.copyFrom(meshesUnderPointer[controller.uniqueId].position);
+                        meshesUnderPointer[controller.uniqueId].physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+                        meshesUnderPointer[controller.uniqueId].physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+                    })
+                });
+        }
+    }
+
+    const onLeftHandSqueezeEnd = () => {
+        // throw the object
+        if (observers[controller.uniqueId] && meshesUnderPointer[controller.uniqueId]) {
+            xr.baseExperience.sessionManager.onXRFrameObservable.remove(observers[controller.uniqueId]);
+            observers[controller.uniqueId] = null;
+            meshesUnderPointer[controller.uniqueId].physicsImpostor.setLinearVelocity(tmpVec);
+        }
+    }
+
     // XR-way of interacting with the controllers for the left hand:
     xr.input.onControllerAddedObservable.add((controller) => {
-        controller.onMotionControllerInitObservable.add((motionController) => {
-            if (motionController.handness === 'left') {
-                motionController.getMainComponent().onButtonStateChangedObservable.add((component) => {
-                    if (component.changes.pressed) {
-                        if (component.pressed) {
-                            for (var x = 0; x < 7; x++) {
-                                for (var z = 0; z < 7; z++) {
-                                    const box1 = towerMeshes[x * 7 + z]
-                                    box1.position.x = (x - 4) * 6;
-                                    box1.position.y = 2 + z * 2;
-                                    box1.position.z = 100;
-                                    box1.rotationQuaternion = new BABYLON.Quaternion();
-                                    box1.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-                                    box1.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+        if (controller.inputSource.handness === 'left') {
+            if (controller.inputSource.gamepad) {
+                controller.onMotionControllerInitObservable.add((motionController) => {
+                    // is squeeze available?
+                    const squeeze = motionController.getComponentOfType('squeeze');
+                    if (squeeze) {
+                        // check its state and handle state changes
+                        squeeze.onButtonStateChangedObservable.add(() => {
+                            // pressed was changed
+                            if (squeeze.changes.pressed) {
+                                // is it pressed?
+                                if (squeeze.pressed) {
+                                    // animate position
+                                    onLeftHandSqueeze();
+                                } else {
+                                    onLeftHandSqueezeEnd();
                                 }
                             }
-                            let bullt;
-                            while (bullt = bullets.pop()) {
-                                bullt.dispose();
-                            }
-                            Object.keys(observers).forEach(id => {
-                                xr.baseExperience.sessionManager.onXRFrameObservable.remove(observers[id]);
-                                observers[id] = null;
-                            });
-                        }
+                        });
                     }
-                });
-                // is squeeze available?
-                const squeeze = motionController.getComponentOfType('squeeze');
-                if (squeeze) {
-                    // check its state and handle state changes
-                    squeeze.onButtonStateChangedObservable.add(() => {
-                        // pressed was changed
-                        if (squeeze.changes.pressed) {
-                            // is it pressed?
-                            if (squeeze.pressed) {
-                                // animate position
-                                controller.getWorldPointerRayToRef(tmpRay, true);
-                                tmpRay.direction.scaleInPlace(1.5);
-                                const position = controller.grip ? controller.grip.position : controller.pointer.position;
-
-                                let mesh = scene.meshUnderPointer;
-                                if (xr.pointerSelection.getMeshUnderPointer) {
-                                    mesh = xr.pointerSelection.getMeshUnderPointer(controller.uniqueId);
-                                }
-                                if (mesh && mesh !== ground && mesh.physicsImpostor) {
-                                    const animatable = BABYLON.Animation.CreateAndStartAnimation('meshmove',
-                                        mesh, 'position', 30, 15, mesh.position.clone(),
-                                        position.add(tmpRay.direction),
-                                        BABYLON.Animation.ANIMATIONLOOPMODE_CONSTANT,
-                                        new BABYLON.BezierCurveEase(0.3, -0.75, 0.7, 1.6), () => {
-                                            if (!mesh) return;
-                                            meshesUnderPointer[controller.uniqueId] = mesh;
-                                            observers[controller.uniqueId] = xr.baseExperience.sessionManager.onXRFrameObservable.add(() => {
-                                                const delta = (xr.baseExperience.sessionManager.currentTimestamp - lastTimestamp);
-                                                lastTimestamp = xr.baseExperience.sessionManager.currentTimestamp;
-                                                controller.getWorldPointerRayToRef(tmpRay, true);
-                                                tmpRay.direction.scaleInPlace(1.5);
-                                                const position = controller.grip ? controller.grip.position : controller.pointer.position;
-                                                tmpVec.copyFrom(position);
-                                                tmpVec.addInPlace(tmpRay.direction);
-                                                tmpVec.subtractToRef(oldPos, tmpVec);
-                                                tmpVec.scaleInPlace(1000 / delta);
-                                                meshesUnderPointer[controller.uniqueId].position.copyFrom(position);
-                                                meshesUnderPointer[controller.uniqueId].position.addInPlace(tmpRay.direction);
-                                                oldPos.copyFrom(meshesUnderPointer[controller.uniqueId].position);
-                                                meshesUnderPointer[controller.uniqueId].physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-                                                meshesUnderPointer[controller.uniqueId].physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-                                            })
-                                        });
-                                }
-                            } else {
-                                // throw the object
-                                if (observers[controller.uniqueId] && meshesUnderPointer[controller.uniqueId]) {
-                                    xr.baseExperience.sessionManager.onXRFrameObservable.remove(observers[controller.uniqueId]);
-                                    observers[controller.uniqueId] = null;
-                                    meshesUnderPointer[controller.uniqueId].physicsImpostor.setLinearVelocity(tmpVec);
-                                }
-                            }
-                        }
-                    });
-                }
+                })
+            } else {
+                // use the squeeze event if no gamepad available
+                xr.baseExperience.sessionManager.session.addEventListener('squeezestart', onLeftHandSqueeze);
+                xr.baseExperience.sessionManager.session.addEventListener('squeezeend', onLeftHandSqueezeEnd);
+                xr.baseExperience.sessionManager.onXRSessionEnded.addOnce(() => {
+                    // probably unneeded, as the session ended, but clean up just in case.
+                    xr.baseExperience.sessionManager.session.removeEventListener('squeezestart', onLeftHandSqueeze);
+                    xr.baseExperience.sessionManager.session.removeEventListener('squeezeend', onLeftHandSqueezeEnd);
+                })
             }
-        })
+        }
     })
-
 
     // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
     scene.constantlyUpdateMeshUnderPointer = true;
