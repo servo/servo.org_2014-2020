@@ -196,6 +196,9 @@ var createScene = async function () {
         });
     });
 
+    const fm = xr.baseExperience.featuresManager;
+    fm.enableFeature(BABYLON.WebXRFeatureName.BACKGROUND_REMOVER);
+
     // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974
     scene.constantlyUpdateMeshUnderPointer = true;
     return scene;

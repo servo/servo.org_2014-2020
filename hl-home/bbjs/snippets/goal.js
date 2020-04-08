@@ -189,6 +189,8 @@ var createScene = async function () {
         }
     });
 
+    fm.enableFeature(BABYLON.WebXRFeatureName.BACKGROUND_REMOVER);
+
     let throwBalls = false;
     let score = 0;
 
