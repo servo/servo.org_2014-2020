@@ -66,13 +66,10 @@ var createScene = async function () {
         panel.blockLayout = false;
     }
 
-    const ar_supported = await navigator.xr.isSessionSupported("immersive-ar");
+    const mode = await navigator.xr.isSessionSupported("immersive-ar") ? "ar" : "vr";
     const xr = await scene.createDefaultXRExperienceAsync({
         floorMeshes: [],
-        uiOptions: {
-            sessionMode: ar_supported ? "immersive-ar" : "immersive-vr"
-        },
-        inputOptions: { doNotLoadControllerMeshes: false}
+        uiOptions: { sessionMode: "immersive-" + mode }
     });
     
     // necessary until https://github.com/BabylonJS/Babylon.js/issues/7974

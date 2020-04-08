@@ -155,7 +155,11 @@ var createScene = async function () {
     const spheres = [];
 
     // Enable XR
-    var xr = await scene.createDefaultXRExperienceAsync({ floorMeshes: [environment.ground] });
+    const mode = await navigator.xr.isSessionSupported("immersive-ar") ? "ar" : "vr";
+    const xr = await scene.createDefaultXRExperienceAsync({
+        floorMeshes: [environment.ground],
+        uiOptions: { sessionMode: "immersive-" + mode }
+    });
 
     // Add controllers to shadow.
     xr.input.onControllerAddedObservable.add((controller) => {

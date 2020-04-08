@@ -44,11 +44,12 @@ var createScene = async function () {
 
     groundNoParent.receiveShadows = true;
     // Enable XR
-    var xr = await scene.createDefaultXRExperienceAsync({
-        floorMeshes: [environment.ground], inputOptions: {
-            doNotLoadControllerMeshes: false
-        }
+    const mode = await navigator.xr.isSessionSupported("immersive-ar") ? "ar" : "vr";
+    const xr = await scene.createDefaultXRExperienceAsync({
+        floorMeshes: [environment.ground],
+        uiOptions: { sessionMode: "immersive-" + mode }
     });
+
     xr.pointerSelection.detach();
 
     // create the net

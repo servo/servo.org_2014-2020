@@ -111,8 +111,10 @@ var createScene = async function () {
     }
 
     // enable xr
+    const mode = await navigator.xr.isSessionSupported("immersive-ar") ? "ar" : "vr";
     const xr = await scene.createDefaultXRExperienceAsync({
-        floorMeshes: [ground]
+        floorMeshes: [ground],
+        uiOptions: { sessionMode: "immersive-" + mode }
     });
 
     // enable physics
