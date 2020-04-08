@@ -126,74 +126,69 @@ var createScene = async function () {
                 racket.rotationQuaternion.copyFrom(handle.parent.rotationQuaternion);
             });
 
-            xr.input.xrSessionManager.session.addEventListener("squeeze", () => {
-                console.log("PAUL:XXX:1");
-            })
-            xr.input.xrSessionManager.session.addEventListener("select", () => {
-                console.log("PAUL:XXX:2");
-            })
-
             xr.input.onControllerRemovedObservable.add(() => {
                 racket.isVisible = false;
                 xr.baseExperience.sessionManager.onXRFrameObservable.remove(frameObserver);
             });
         }
 
-        if (controller.inputSource.handedness === 'left') {
-            const handle = BABYLON.MeshBuilder.CreateCylinder('handle', {
-                height: 0.4, diameter: 0.02, tessellation: 8
-            });
-            handle.rotate(BABYLON.Axis.X, Math.PI / 2);
-            handle.position.z += 0.2;
-            handle.parent = controller.grip || controller.pointer;
+        const onLeftHandPressed = () => {
+            observer = xr.baseExperience.sessionManager.onXRFrameObservable.add(() => {
+                const delta = (xr.baseExperience.sessionManager.currentTimestamp - lastTimestamp);
+                lastTimestamp = xr.baseExperience.sessionManager.currentTimestamp;
+                controller.getWorldPointerRayToRef(tmpRay, true);
+                tmpRay.direction.scaleInPlace(1.2);
+                const position = controller.grip ? controller.grip.position : controller.pointer.position;
+                tmpVec.copyFrom(position);
+                tmpVec.addInPlace(tmpRay.direction);
+                tmpVec.subtractToRef(oldPos, tmpVec);
+                tmpVec.scaleInPlace(1000 / delta);
+                ball.position.copyFrom(position);
+                ball.position.addInPlace(tmpRay.direction);
+                oldPos.copyFrom(ball.position);
+                ball.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
+                ball.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
+            })
         }
+
+        const onLeftHandReleased = () => {
+            // throw a ball, if exists
+            if (observer) {
+                xr.baseExperience.sessionManager.onXRFrameObservable.remove(observer);
+                observer = null;
+                ball.physicsImpostor.setLinearVelocity(tmpVec);
+            }
+        }
+
 
         controller.onMeshLoadedObservable.addOnce((rootMesh) => {
             shadowGenerator.addShadowCaster(rootMesh, true);
         });
-
-        
-
-
-        controller.onMotionControllerInitObservable.add(() => {
-            console.log("PAUL:1");
-            if (controller.inputSource.handedness === 'left') {
-                console.log("PAUL:2");
-                const component = controller.motionController.getMainComponent();
-                component.onButtonStateChangedObservable.add(() => {
-                    console.log("PAUL:3");
-                    if (component.changes.pressed) {
-                        console.log("PAUL:4");
-                        if (component.pressed) {
-                            console.log("PAUL:5");
-                            observer = xr.baseExperience.sessionManager.onXRFrameObservable.add(() => {
-                                const delta = (xr.baseExperience.sessionManager.currentTimestamp - lastTimestamp);
-                                lastTimestamp = xr.baseExperience.sessionManager.currentTimestamp;
-                                controller.getWorldPointerRayToRef(tmpRay, true);
-                                tmpRay.direction.scaleInPlace(1.2);
-                                const position = controller.grip ? controller.grip.position : controller.pointer.position;
-                                tmpVec.copyFrom(position);
-                                tmpVec.addInPlace(tmpRay.direction);
-                                tmpVec.subtractToRef(oldPos, tmpVec);
-                                tmpVec.scaleInPlace(1000 / delta);
-                                ball.position.copyFrom(position);
-                                ball.position.addInPlace(tmpRay.direction);
-                                oldPos.copyFrom(ball.position);
-                                ball.physicsImpostor.setLinearVelocity(BABYLON.Vector3.Zero());
-                                ball.physicsImpostor.setAngularVelocity(BABYLON.Vector3.Zero());
-                            })
-                        } else {
-                            // throw a ball, if exists
-                            if (observer) {
-                                xr.baseExperience.sessionManager.onXRFrameObservable.remove(observer);
-                                observer = null;
-                                ball.physicsImpostor.setLinearVelocity(tmpVec);
+        if (controller.inputSource.handedness === 'left') {
+            if (controller.inputSource.gamepad) {
+                controller.onMotionControllerInitObservable.add(() => {
+                    const component = controller.motionController.getMainComponent();
+                    component.onButtonStateChangedObservable.add(() => {
+                        if (component.changes.pressed) {
+                            if (component.pressed) {
+                                onLeftHandPressed();
+                            } else {
+                                onLeftHandReleased();
                             }
                         }
-                    }
+                    })
+                });
+            } else {
+                // use the squeeze event if no gamepad available
+                xr.baseExperience.sessionManager.session.addEventListener('squeezestart', onLeftHandPressed);
+                xr.baseExperience.sessionManager.session.addEventListener('squeezeend', onLeftHandReleased);
+                xr.baseExperience.sessionManager.onXRSessionEnded.addOnce(() => {
+                    // probably unneeded, as the session ended, but clean up just in case.
+                    xr.baseExperience.sessionManager.session.removeEventListener('squeezestart', onLeftHandPressed);
+                    xr.baseExperience.sessionManager.session.removeEventListener('squeezeend', onLeftHandReleased);
                 })
             }
-        });
+        }
     });
 
     const fm = xr.baseExperience.featuresManager;
