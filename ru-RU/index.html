@@ -1,0 +1,246 @@
+<!doctype html>
+<html lang="ru-RU">
+<head>
+  <meta charset='utf-8'>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Servo, браузерный движок</title>
+  <link rel='stylesheet' href='/css/bootstrap.css'/>
+  <link rel='stylesheet' href='/css/style.css'/>
+</head>
+
+<body>
+  <div class='container'>
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h1 id='page-title' class='page-header'>
+          Servo, браузерный движок
+        </h1>
+      </div>
+      <div class='col-sm-12'>
+        <h3 class='description'>
+          <b>Servo</b> - это современный высокопроизводительный браузерный движок, предназначенный как для приложений, так и для встроенного использования.
+        </h3>
+      </div>
+    </div>
+
+    <br>
+
+    <div class='row'>
+      <div class='col-sm-12 col-lg-6'>
+        <p class='info'>
+          Проект Servo, спонсируемый Mozilla и написанный на новом языке системного программирования <a href="https://www.rust-lang.org">Rust</a>, направлен на достижение лучшего параллелизма, безопасности, модульности и производительности.
+        </p>
+        <a class='btn btn-lg btn-primary center-block'
+        href="https://download.servo.org">Скачать Servo nightly</a><br /><br />
+      </div>
+
+      <div class='col-sm-12 col-lg-6'>
+        <div class='thumbnail text-center'>
+          <a href="/screenshot.png">
+            <img class='media-object' src='/screenshot.png' alt="servo.org сгенерированный с помощью Servo"/>
+          </a>
+          Актульаная страница на 12.12.2018 сгенерированный с помощью Servo
+        </div>
+      </div>
+    </div>
+
+    <div class='row'>
+      <div class='col-sm-12'>
+        <div id='community'>
+
+          <p>
+            Проект Servo, созданный Mozilla Research, создается глобальным сообществом от отдельных участников до таких компаний, как Mozilla и Samsung.
+          </p>
+
+          <p>
+            Servo в настоящее время поддерживает Linux, macOS, Windows и UWP.
+          </p>
+
+        </div>
+      </div>
+
+    </div>
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h2 class='header'>Начало</h2>
+        <h3>Предпосылки</h3>
+        <p>
+          Вы можете найти то, что вам нужно для установки в вашей конкретной системе
+          <a href="https://github.com/servo/servo#setting-up-your-environment"> на нашей странице GitHub</a>.
+        </p>
+
+        <h3>Сборка</h3>
+        <p>
+          Servo построен с помощью Cargo, пакетного менеджера Rust. Мы также используем инструменты Mozilla Mach для организации сборки и других задач.
+        </p>
+
+        <h4>Разработка</h4>
+        <p>
+          Чтобы собрать Servo в режиме разработки. Получаемый бинарный файл получается очень медленным.
+        </p>
+
+        <pre><code>git clone https://github.com/servo/servo
+cd servo
+./mach build --dev
+./mach run tests/html/about-mozilla.html</code></pre>
+
+        <p>
+          Для бенчмарка, тестирования производительности или использования в продакшене добавьте
+          <code>--release</code> флаг:
+        </p>
+
+        <pre><code>./mach build --release
+./mach run --release tests/html/about-mozilla.html</code></pre>
+
+        <h3>Запуск</h3>
+        <p>
+          Используйте <code>./mach run [url]</code> для запуска Servo.
+        </p>
+
+        <h4>Аргументы</h4>
+
+        <ul>
+          <li>
+            <code>-p INTERVAL</code> включает профилировщик и выгружает информацию в консоль каждые INTERVAL секунд
+          </li>
+          <li>
+            <code>-s SIZE</code> задает размер плитки под покраску; по умолчанию 512
+          </li>
+          <li>
+            <code>-z</code> отключает весь графический вывод; полезно для запуска тестов JS / макета
+          </li>
+        </ul>
+
+      </div>
+    </div>
+
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h2 class='header'>Вклад</h2>
+
+        <p id='contributing'>
+          Servo поощряет вклад как опытных, так и новых разработчиков. Посмотрите ссылки внизу страницы, чтобы узнать больше и присоединиться к сотням участников со всего мира, которые работают над тем, чтобы сделать Servo еще лучше.
+        </p>
+
+        <p>
+          Вклады в Servo или его зависимости следует делать в форме запросов на вытягивание GitHub. Каждый запрос на вытягивание будет рассмотрен основным участником (кем-то, у кого есть разрешение на внесение исправлений) и либо попадет в основное дерево, либо получит отзыв о необходимых изменениях. Все материалы должны соответствовать этому формату, даже от основных участников.
+        </p>
+
+        <p>
+          Если вы хотите поработать над проблемой, сначала заявите о ней, прокомментировав проблему GitHub, над которой вы хотите работать. Это сделано для предотвращения дублирования усилий участников по одной и той же проблеме.
+        </p>
+
+        <p>
+          Если вы ищете простые ошибки, взгляните на issue-тег <a
+          href="https://github.com/servo/servo/labels/E-easy">E-Easy</a> в
+          GitHub.
+        </p>
+
+        <p>
+          См.
+          <a href="https://github.com/servo/servo/blob/master/docs/HACKING_QUICKSTART.md">HACKING_QUICKSTART.md</a>
+          для получения дополнительной информации о том, как начать работать с Servo.
+        </p>
+
+        <h3>Pull Request чеклист</h3>
+
+        <ul>
+          <li>
+            Отделение от master ветки и, если необходимо, rebase на текущую master ветку
+            Если она не сливается с master вектой, вас могут попросить внести изменения в вашу ветку.
+          </li>
+
+          <li>
+            Не помещайте обновления подмодулей в pull-request, если они не предназначены для приземлённых коммитов.
+          </li>
+
+          <li>
+            Если ваш патч не проверяется или вам нужен конкретный человек, чтобы
+            просмотреть его, вы можете использовать @, запрашивающего рецензию в pull-request
+            или комментарий, или вы можете попросить о пересмотре в <a
+            href="https://chat.mozilla.org/#/room/#servo:mozilla.org">комнате Servo</a>
+            в Mozilla <a href="https://wiki.mozilla.org/Matrix">Matrix</a>.
+          </li>
+
+          <li>
+            Добавляйте тесты, относящиеся к исправленной ошибке или новой функции. Смотрите наш
+            <a href="https://github.com/servo/servo/wiki/Testing"> справочник по тестированию </a>
+            для получения большей информации.
+          </li>
+
+          <li>
+            Для получения конкретных инструкций по git см. <a
+            href="https://github.com/servo/servo/wiki/Github-workflow">GitHub workflow
+            101.</a>
+          </li>
+        </ul>
+
+        <a class='btn btn-primary btn-large' role='button'
+        href='https://starters.servo.org/'>Начать контрбьютить</a>
+
+      </div>
+    </div>
+
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h2 class='header'>Коммуникация</h2>
+
+        <p>
+          Servo contributors frequent the <a
+          href="https://chat.mozilla.org/#/room/#servo:mozilla.org">комната Servo</a> в
+          <a href="https://wiki.mozilla.org/Matrix">Mozilla Matrix.</a>
+          Вы также можете присоединиться к рассылке
+          <a href="https://lists.mozilla.org/listinfo/dev-servo">dev-servo.</a>
+        </p>
+
+      </div>
+    </div>
+
+    <div class='row'>
+      <div class='col-sm-12'>
+        <h2 class='header'>Кодекс поведения</h2>
+
+        <p>
+          Мы соблюдаем
+          <a href="https://www.rust-lang.org/policies/code-of-conduct">кодекс поведения Rust.</a>
+        </p>
+
+      </div>
+    </div>
+
+    <div class='row' id='languages'>
+      <div class='col-sm-12'>
+
+        <p>Наш сайт на других языках:
+          <a href="/index.html">English</a>,
+          <a href="/zh-CN/index.html">简体中文</a>, 
+          <a href="/zh-TW/index.html">正體中文(繁體中文)</a>, 
+          <a href="/ko-KR/index.html">한국어</a>, 
+          <a href="/ja-JP/index.html">日本語</a>
+        </p>
+
+      </div>
+    </div>
+
+    <footer>
+      <div class='row text-center'>
+        <div class='col-md-3'>
+          <a href="https://github.com/servo">Вклад</a>
+        </div>
+        <div class='col-md-3'>
+          <a href='https://github.com/servo/servo/wiki/Roadmap'>Дорожная карта Servo</a>
+        </div>
+        <div class='col-md-3'>
+          <a href="https://blog.servo.org/">Блог Servo</a>
+        </div>
+        <div class='col-md-3'>
+          <p class='text-muted'><a
+          href="https://chat.mozilla.org/#/room/#servo:mozilla.org">Команата Servo</a>
+          в <a href="https://wiki.mozilla.org/Matrix">Matrix</a></p>
+        </div>
+      </div>
+    </footer>
+  </div>
+
+</body>
+</html>
